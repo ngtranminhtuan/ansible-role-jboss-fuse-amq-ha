@@ -1,0 +1,46 @@
+---
+- include: "prepare-host.yml"
+  when: prepare_host
+
+- include: "state-check.yml"
+- include: "soft-install.yml"  
+
+# Karaf based components
+- include: "init-config-karaf.yml"
+  when: setup_karaf
+- include: "init-config-karaf-amq.yml"
+  when: setup_karaf and setup_amq
+- include: "init-config-karaf-amq-nob.yml"
+  when: setup_karaf and setup_amq and setup_amq_network
+
+- include: "start-server-karaf.yml"
+  when: setup_karaf
+
+- include: "install-features-karaf.yml"
+  when: setup_karaf
+
+# EAP Based components
+- include: "init-config-eap.yml"
+  when: setup_eap
+
+- include: "init-config-eap-cluster.yml"
+  when: setup_eap and setup_eap_cluster
+  
+- include: "start-server-eap.yml"
+  when: setup_eap
+
+- include: "init-config-eap-resources.yml"
+  when: setup_eap
+
+# Artemis Based components
+- include: "init-config-artemis.yml"
+  when: setup_artemis
+
+- include: "init-config-artemis-resources.yml"
+  when: setup_artemis
+
+- include: "init-config-artemis-cluster.yml"
+  when: setup_artemis and setup_amq_network
+  
+- include: "start-server-artemis.yml"
+  when: setup_artemis and setup_amq_network

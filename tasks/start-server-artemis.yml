@@ -1,0 +1,18 @@
+---
+- name: Start Artemis Container
+  shell: "nohup ./instances/{{amq_broker_name}}/bin/artemis run >/dev/null 2>&1 &"
+  args:
+    chdir: "{{ target_package_folder }}"
+
+- name: Check if server is up
+  uri:
+    url: "http://{{ansible_ssh_host}}:{{http_port}}/console/jolokia/read/org.apache.activemq.artemis:broker=%22{{amq_broker_name}}%22/Started"
+    method: GET
+    user: "{{ users.admin.username }}"
+    password: "{{ users.admin.password }}"
+    force_basic_auth: yes
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 2

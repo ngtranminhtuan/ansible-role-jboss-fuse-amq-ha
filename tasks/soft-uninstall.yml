@@ -1,0 +1,11 @@
+---
+
+- name: Remove target package folder
+  file: 
+    path: "{{target_package_folder}}"
+    state: absent
+
+- name: Remove nfs folder
+  file: 
+    path: "{{amq_data_store_folder}}"
+    state: absent

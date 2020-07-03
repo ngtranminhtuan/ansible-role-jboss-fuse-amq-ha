@@ -1,0 +1,24 @@
+[fuse]
+fuse-a ansible_ssh_host=localhost ansible_connection=local 
+fuse-b ansible_ssh_host=localhost ansible_connection=local 
+
+[amq:children]
+masters
+slaves
+
+[amqa]
+amq-a-master
+amq-a-slave
+
+[amqb]
+amq-b-master
+amq-b-slave
+
+[masters]
+amq-a-master ansible_ssh_host=localhost ansible_connection=local 
+amq-b-master ansible_ssh_host=localhost ansible_connection=local 
+
+[slaves]
+amq-a-slave ansible_ssh_host=localhost ansible_connection=local 
+amq-b-slave ansible_ssh_host=localhost ansible_connection=local 
+
